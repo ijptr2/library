@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Modal with Input Fields</title>
+    <!-- Add Bootstrap CSS link -->
+    <link
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container" style="padding-top: 30px">
+      <div class="row">
+        <div class="col">
+          <table class="table table-bordered" id="data-table">
+            <thead>
+              <tr style="background-color: rgb(33, 120, 146)">
+                <th>Title</th>
+                <th>Author</th>
+                <th>Pages</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Add more rows as needed -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Button to trigger the modal -->
+    <div style="padding-left: 550px">
+      <button
+        type="button"
+        class="btn"
+        data-toggle="modal"
+        data-target="#myModal"
+        style="background-color: rgb(33, 120, 146)"
+      >
+        Add book
+      </button>
+    </div>
+
+    <!-- The Modal -->
+    <div class="modal" id="myModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">enter book</h4>
+            <button type="button" class="close" data-dismiss="modal">
+              &times;
+            </button>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="title">Title:</label>
+                <input type="text" class="form-control" id="title" />
+              </div>
+              <div class="form-group">
+                <label for="author">Author:</label>
+                <input type="email" class="form-control" id="author" />
+              </div>
+              <div class="form-group">
+                <label for="pages">Pages:</label>
+                <input type="text" id="pages" />
+              </div>
+            </form>
+          </div>
+
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              data-dismiss="modal"
+              type="button"
+              class="btn btn-primary"
+              onclick="submitForm()"
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Bootstrap JS and jQuery links -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+      const myLibrary = [];
+
+      function Book(title, author, pages) {
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+      }
+
+      function submitForm() {
+        // Get input values and do something with them
+        var title = document.getElementById("title").value;
+        var author = document.getElementById("author").value;
+        var pages = document.getElementById("pages").value;
+
+        // Create a new book object
+        var book = new Book(title, author, pages);
+
+        // Add the book to the library
+        myLibrary.push(book);
+
+        // Clear the form fields
+        document.getElementById("title").value = "";
+        document.getElementById("author").value = "";
+        document.getElementById("pages").value = "";
+
+        // Update the table with the new book
+        var tableBody = document
+          .getElementById("data-table")
+          .getElementsByTagName("tbody")[0];
+
+        var newRow = tableBody.insertRow(); // Insert a new row
+        var titleCell = newRow.insertCell(0); // Insert a cell for title
+        var authorCell = newRow.insertCell(1); // Insert a cell for author
+        var pagesCell = newRow.insertCell(2); // Insert a cell for pages
+        var actionCell = newRow.insertCell(3);
+
+        // Set the innerHTML of the cells to the book's properties
+        titleCell.innerHTML = book.title;
+        authorCell.innerHTML = book.author;
+        pagesCell.innerHTML = book.pages;
+
+        var deleteButton = document.createElement("button");
+        deleteButton.innerHTML = "Delete";
+        deleteButton.className = "btn btn-danger";
+        deleteButton.onclick = function () {
+          // Add logic to delete the book from the library and update the table
+          var index = myLibrary.indexOf(book);
+          if (index !== -1) {
+            myLibrary.splice(index, 1);
+            tableBody.deleteRow(newRow, index);
+          }
+        };
+
+        // Append the button to the action cell
+        actionCell.appendChild(deleteButton);
+      }
+    </script>
+    <footer style="padding-top: 500px; padding-left: 500px">
+      created by jules 2023
+    </footer>
+  </body>
+</html>
